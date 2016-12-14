@@ -44,7 +44,6 @@ function DataLoader:__init(opt)
     end
     print('Parsing objects json file...\n')
     self.image_objects_json = json.decode(json_line);
-    print(self.image_objects_json[1].objects[1].names[1])
 end
 
 -- get the number of classes in data
@@ -83,7 +82,10 @@ function DataLoader:load_images_and_labels(start_img,end_img)
         image_path = string.sub(image_path, second_last_slash_loc)
         image_path = self.data_dir .. image_path
         
-        imgs[image_no-start_img+1] = image.scale(image.load(image_path), img_size, img_size)
+        print('Image number ' .. image_no)
+        print('Resizing to '.. self.img_size)
+        
+        imgs[image_no-start_img+1] = image.scale(image.load(image_path), self.img_size, self.img_size)
         labels[image_no-start_img+1] = self.image_objects_json[image_no].objects[1].names[1]
     end
     return imgs, labels
