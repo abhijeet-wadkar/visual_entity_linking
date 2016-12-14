@@ -83,7 +83,7 @@ function DataLoader:load_images_and_labels(start_img,end_img)
         image_path = string.sub(image_path, second_last_slash_loc)
         image_path = self.data_dir .. image_path
         
-        imgs[image_no-start_img+1] = image.load(image_path)
+        imgs[image_no-start_img+1] = image.scale(image.load(image_path), img_size, img_size)
         labels[image_no-start_img+1] = self.image_objects_json[image_no].objects[1].names[1]
     end
     return imgs, labels
