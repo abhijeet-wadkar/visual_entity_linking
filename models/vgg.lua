@@ -36,7 +36,7 @@ function create_vgg_model(number_of_categories)
   vgg:add(nn.BatchNormalization(512))
   vgg:add(nn.ReLU(true))
   vgg:add(nn.Dropout(0.5))
-  vgg:add(nn.Linear(512,number_of_categories))
+  vgg:add(nn.Linear(512, #number_of_categories))
   vgg:add(nn.LogSoftMax())
   
    
