@@ -46,10 +46,54 @@ function DataLoader:__init(opt)
     self.image_objects_json = json.decode(json_line);
 end
 
+
 -- get the number of classes in data
 function DataLoader:get_number_classes() 
-    return classes
+    tab = torch.load("objects")
+    return tab
+    
 end
+
+-- Load the classes from Img Labels and then save to a file 
+function DataLoader:get_img_labels()
+    local img_length =#self.image_objects_json
+
+    
+    tab = {};
+    print (tab)
+    for obj =1, img_length do
+        print("Img number " .. obj)
+        local objects_length = #self.image_objects_json[obj].objects
+        for j = 1, objects_length do
+            local word = self.image_objects_json[obj].objects[j].names
+            local names_len = #word
+
+            if(names_len ~= 0) then
+                --    table.insert(tab,1,self.image_objects_json[obj].objects[j].names[1])    
+                if tab[self.image_objects_json[obj].objects[j].names[1]] == nil then
+                     tab[self.image_objects_json[obj].objects[j].names[1]] = 1
+                else
+                     tab[self.image_objects_json[obj].objects[j].names[1]] = tab[self.image_objects_json[obj].objects[j].names[1]] + 1
+                end
+                
+            end
+        end
+        
+        
+        if (self.image_objects_json[obj]~=nil or self.image_objects_json[obj].objects~=nil or self.image_objects_json[obj].objects[1]~=nil or self.image_objects_json[obj].objects[1].names~=nil or self.image_objects_json[obj].objects[1].names[1]~=nil) then
+            table.insert(tab,1,self.image_objects_json[obj].objects[1].names[1])            
+            
+        else
+            print ("Empty")    
+        end
+        --]]
+        --print (tab)
+    end
+    torch.save("objects",tab);
+   return tab
+end
+
+
 
 -- load batch of images
 function DataLoader:next_batch()

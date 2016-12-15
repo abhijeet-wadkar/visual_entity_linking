@@ -17,7 +17,10 @@ local function main()
   collectgarbage()
   print('Data loaded in memory...')
   
-  imgs, labels  = data_loader:next_batch()
+  --imgs, labels  = data_loader:next_batch()
+  t=data_loader:get_number_classes()
+  print (t)
+  print (#t) 
   
     
 end
