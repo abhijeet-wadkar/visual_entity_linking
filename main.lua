@@ -22,7 +22,7 @@ local function main()
   total_classes = data_loader:get_number_classes()
  
   -- creating vggnet model
-  model = create_small_model(total_classes)
+  model = create_vgg_model(total_classes)
   print(model)
   
   -- define criteria
@@ -33,10 +33,10 @@ local function main()
   number_iterations = opt.iterations
   num_batches = math.floor(data_loader:get_number_of_data_points()/opt.batch_size)
   for i = 1, number_iterations*num_batches do
+    -- get next batch of data
     imgs, labels  = data_loader:next_batch()
     collectgarbage()
-    print(imgs:size())
-    print(labels:size())
+    -- pass it through network and change weights
     model:zeroGradParameters()
     output = model:forward(imgs)
     loss = criterion:forward(output, labels)
@@ -44,7 +44,6 @@ local function main()
     model:backward(imgs, gradient)
     print("Loss: " ..loss)
   end
-
 end
 
 main()
