@@ -15,8 +15,8 @@ function DataLoader:__init(opt)
     -- image attributes file
     -- self.image_attributes_file = opt.image_attributes_file
     -- total number of pixels in image
-    -- self.img_size = opt.img_size
-    self.img_size = 224
+    self.img_size = opt.img_size
+    --self.img_size = 224
     -- number of images given in each gradient step
     self.batch_size = opt.batch_size
     -- current starting image number
