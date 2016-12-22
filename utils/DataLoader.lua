@@ -111,9 +111,9 @@ end
 
 function DataLoader:load_images_and_labels(start_img,end_img)
     local imgs = torch.zeros(end_img-start_img+1, 3, self.img_size, self.img_size)
-    -- local labels = torch.zeros(end_img-start_img+1, #self.categories)
+    local labels = torch.zeros(end_img-start_img+1, #self.categories)
     -- local labels = torch.zeros(end_img-start_img+1)
-    local labels = torch.ByteTensor(end_img-start_img+1)
+    -- local labels = torch.ByteTensor(end_img-start_img+1)
     
     for image_no = start_img, end_img do
         -- getting the relative file path from the url
@@ -136,15 +136,16 @@ function DataLoader:load_images_and_labels(start_img,end_img)
         for idx = 1, objects_len do
           object_label = self.image_objects_json[image_no].objects[idx].synsets[1]
           if object_label ~= nil then
-            -- labels[image_no-start_img+1][self.categories_hash[object_label]] = 1
-            labels[image_no-start_img+1] = self.categories_hash[object_label]
+            labels[image_no-start_img+1][self.categories_hash[object_label]] = 1
+            -- labels[image_no-start_img+1] = self.categories_hash[object_label]
           else
-            labels[image_no-start_img+1] = 1
+            -- labels[image_no-start_img+1] = 1
           end
-          
+          --[[ 
           if labels[image_no-start_img+1] == 0 then
             labels[image_no-start_img+1] = 1
           end
+          --]]
           
         end
     end
