@@ -70,7 +70,7 @@ local function main()
     model:backward(imgs, gradient)
     print("Loss: " ..loss)
     
-     if iter % (opt.checkpoint_every) == 0 then
+     if iter % ((opt.checkpoint_every * num_batches)) == 0 then
       -- Save Checkpoint
       chkpt = 'models/checkpoints'..opt.checkpointno..'/'.. iter
       print('Saving checkpoint to disk at '..chkpt)

@@ -41,11 +41,9 @@ function create_small_model(number_of_categories)
   model:add(nn.SpatialMaxPooling(2,2,2,2))
   
   model:add(nn.View(512*7*7))                    -- reshapes from a 3D tensor of 16x5x5 into 1D tensor of 16*5*5
-  model:add(nn.Linear(512*7*7, 120))             -- fully connected layer (matrix multiplication between input and weights)
+  model:add(nn.Linear(512*7*7, 16000))             -- fully connected layer (matrix multiplication between input and weights)
   model:add(nn.ReLU())                       -- non-linearity 
-  model:add(nn.Linear(120, 84))
-  model:add(nn.ReLU())                       -- non-linearity 
-  model:add(nn.Linear(84, #number_of_categories))                   -- 10 is the number of outputs of the network (in this case, 10 digits)
+  model:add(nn.Linear(16000, #number_of_categories))
   model:add(nn.LogSoftMax())
   
   return model
