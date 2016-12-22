@@ -52,6 +52,11 @@ function DataLoader:__init(opt)
       self.categories_hash[value] = count
       count = count + 1  
     end
+    self.total_images = #self.image_meta_data_json
+    
+    print('Total images: ' .. self.total_images)
+    
+    -- self.number_of_training_images = math.floor(self.total_images*.80) 
     
 end
 
@@ -98,6 +103,17 @@ function DataLoader:get_img_labels()
 end
 
 -- load batch of images
+function DataLoader:next_testing_batch()
+    if self.image_number <= self.number_of_training_images or self.image_number >= self.total_images then
+        self.image_number = self.number_of_training_images + 1
+    end
+    local i = self.image_number
+    imgs, labels = self:load_images_and_labels(i, i+self.batch_size-1)
+
+    self.image_number = self.image_number + self.batch_size
+    return imgs, labels
+end
+
 function DataLoader:next_batch()
     if self.image_number >= self.number_of_training_images then
         self.image_number = 1

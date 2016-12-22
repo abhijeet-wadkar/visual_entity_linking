@@ -51,7 +51,7 @@ local function main()
   batch_size = opt.batch_size
   number_iterations = opt.iterations
   num_batches = math.floor(data_loader:get_number_of_data_points()/opt.batch_size)
-  for i = 1, number_iterations*num_batches do
+  for iter = 1, number_iterations*num_batches do
     -- get next batch of data
     imgs, labels  = data_loader:next_batch()
 
@@ -69,7 +69,15 @@ local function main()
     gradient = criterion:backward(output, labels)
     model:backward(imgs, gradient)
     print("Loss: " ..loss)
+    
+     if iter % (opt.checkpoint_every) == 0 then
+      -- Save Checkpoint
+      chkpt = 'models/checkpoints'..opt.checkpointno..'/'.. iter
+      print('Saving checkpoint to disk at '..chkpt)
+      torch.save(chkpt,model)
+    end
   end
+    
 end
 
 main()
